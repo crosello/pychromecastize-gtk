@@ -22,5 +22,10 @@ class handlers():
         file_name = text_file.get_text()
         output = self.builder.get_object('output')
 
+        is_mp4 = self.builder.get_object("extension_mp4").get_active()
+        is_mkv = self.builder.get_object("extension_mkv").get_active()
+
+        extension = "mp4" if is_mp4 is True else "mkv"
+
         converter = Convert()
-        converter.run(file_name, output)
+        converter.run(file_name, extension, output)

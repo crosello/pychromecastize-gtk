@@ -11,19 +11,23 @@ class Convert:
         encoding = locale.getpreferredencoding()
         self.utf8conv = lambda x : unicode(x, encoding).encode('utf8')
 
-    def run(self, filename, output):
+    def run(self, filename, extension, output):
         """
         @type filename: str
-        @type output: gtk._gtk.TextView.TextView
+        @type extension: str
+        @type output: gi.repository.Gtk.TextView.TextView
         """
         output_buffer = output.get_buffer()
+        """@type : gi.repository.Gtk.TextBuffer.TextBuffer"""
+        output_buffer.set_text("");
 
         if not os.path.isfile(filename):
             output_buffer.set_text("File not found")
             return
 
-        command = 'ls -lah %s' % filename
+        command = 'chromecastize --%s "%s"' % (extension, filename)
         print ('Command : %s' % filename)
+
         thr = threading.Thread(target= self.read_output, args=(output, output_buffer, command))
         thr.start()
 
